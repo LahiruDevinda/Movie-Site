@@ -13,9 +13,86 @@ body::before {
     height: 100%;
     z-index: -1;
     
-    background-image: url(../images/site/bg.jpg);
+    background-image: url(../images/home/bg.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.3;
+    opacity: 0.15;
+}
+
+.middle-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+.greeting-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 80px;
+    font-weight: 600;
+    color: white;
+}
+
+.search-bar {
+    height: 50px;
+    width: 600px;            
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;     
+    border: none;
+    padding: 0 20px;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 50px;
+    margin-right: 0px;
+    margin: 0;
+    outline: none;
+}
+
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.search-button{
+    height: 50px;
+    margin-left: 0px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    align-items: center;
+    width: 50px;
+    border: none;
+    background-color: white;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.search-icon {
+    height: 20px;
+    display: block;
+}
+
+.featured-movei-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-left: 50px;
+}
+.featured-movie-star {
+    height: 40px;          
+    width: auto;
+    filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%); 
 }
