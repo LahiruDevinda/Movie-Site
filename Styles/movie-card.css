@@ -13,7 +13,6 @@
     border-radius: 10px;
     background-color: rgb(16, 18, 32);
     transition: transform 0.3s ease;
-    animation: fadeInUp 1.5s ease-out forwards;
 }
 .movie-card-image {
     width: 100%;
@@ -76,13 +75,14 @@
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%);
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px); /* Starts 30px lower */
+@keyframes pulse-shadow {
+    0% {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);    /* Ends at its natural position */
+    50% {
+        box-shadow: 0 5px 25px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 }
