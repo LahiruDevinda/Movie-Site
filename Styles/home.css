@@ -79,7 +79,7 @@ body::before {
     display: block;
 }
 
-.featured-movei-title {
+.featured-movie-title {
     display: flex;
     align-items: center;
     justify-content: flex-start;
