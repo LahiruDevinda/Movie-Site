@@ -1,0 +1,76 @@
+.movies-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px); 
+    margin-bottom: 50px;
+    column-gap: 20px;
+    row-gap: 40px;
+    justify-content: center;
+}
+
+.movie-card {
+    height: 500px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: rgb(16, 18, 32);
+    transition: transform 0.3s ease;
+}
+.movie-card-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.movie-card:hover {
+    transform: translateY(-10px);
+}
+.movie-card-details {
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.movie-name {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.movie-data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.movie-year-rate{
+    display: flex;
+    flex-direction: row;
+    margin-left: 8px;
+    margin-right: 8px;
+    align-items: center;
+    gap: 10px;
+    color: rgb(161, 161, 161);
+}
+
+.star {
+    height: 18px;
+    margin-left: 10px;
+}
+.add-to-wishlist{
+    display: flex;
+    height: 35px;
+    width: 35px;
+    border-radius: 18px;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+
+.add-to-wishlist:hover {
+    background-color: rgb(108, 107, 107);
+}
+.add-to-wishlist:hover img {
+    filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%);
+}
