@@ -13,6 +13,7 @@
     border-radius: 10px;
     background-color: rgb(16, 18, 32);
     transition: transform 0.3s ease;
+    animation: fadeInUp 1.5s ease-out forwards;
 }
 .movie-card-image {
     width: 100%;
@@ -73,4 +74,15 @@
 }
 .add-to-wishlist:hover img {
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px); /* Starts 30px lower */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);    /* Ends at its natural position */
+    }
 }
