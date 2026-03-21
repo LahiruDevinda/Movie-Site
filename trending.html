@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="Styles/trending.css">
         <link rel="stylesheet" href="Styles/movie-card.css">
         <link rel="stylesheet" href="Styles/filter.css">
+        <link rel="stylesheet" href="Styles/animetion.css">
     </head>
     <body>
         <div class="nav-bar">
@@ -27,19 +28,19 @@
                         Trending
                     </button>   
                 </a>
-                <a href="#">
+                <a href="movies.html">
                     <button class="nav-bar-button">
                         <img class="nav-bar-icon" src="images/site/film-clapperboard.svg">
                         Movies
                     </button>   
                 </a>
-                <a href="#">
+                <a href="tv-series.html">
                     <button class="nav-bar-button">
                         <img class="nav-bar-icon" src="images/site/tv.svg">
                         TV Series
                     </button>   
                 </a>
-                <a href="#">
+                <a href="wishlist.html">
                     <button class="nav-bar-button">
                         <img class="nav-bar-icon" src="images/site/heart.svg">
                         Wishlist
@@ -47,118 +48,119 @@
                 </a>
             </div>
         </div>
-
-        <div class="trending-movies">
-            <div class="trending-movie-title">
-                <img class="trending-movie-image" src="images/site/trending-up.svg">
-                <p>Trending Now</p>
-            </div>
-
-            <div class="middle-section">
-                <input class="search-bar" type="text" placeholder="Search trending content...">
-                <div class="filter">
-                    <div class="filter-title">
-                        <img class="filter-title-image" src="images/filter/filter.png">
-                        <h6 class="filter-title-text">Filter</h6>
-                    </div>
-                    <div class="genre-section">
-                        <lable class="filter-lable">Genre</lable>
-                        <div class="genre-buttons">
-                            <button class="genre">Action</button>
-                            <button class="genre">Adventure</button>
-                            <button class="genre">Biography</button>
-                            <button class="genre">Comedy</button>
-                            <button class="genre">Crime</button>
-                            <button class="genre">Drama</button>
-                            <button class="genre">Fantasy</button>
-                            <button class="genre">History</button>
-                            <button class="genre">Horror</button>
-                            <button class="genre">Sci-Fi</button>
-                            <button class="genre">Thriller</button>
-                        </div>
-                    </div>
-                    <div class="year-section">
-                        <lable for="filter-year" class="filter-lable">Year</lable>
-                        <select class="filter-year" id="year" name="year">
-                            <option value="ALL">ALL</option>
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2019-2010">2019 - 2010</option>
-                            <option value="2009-2000">2009 - 2000</option>
-                        </select>
-                    </div>
-                    <button class="clear-button">Clear</button>
+        <div class="page-reveal">
+            <div class="trending-movies">
+                <div class="trending-movie-title">
+                    <img class="trending-movie-image" src="images/site/trending-up.svg">
+                    <p>Trending Now</p>
                 </div>
-            </div>
 
-            <div class="movies-container">
-
-                <div class="movie-card">
-                    <img class="movie-card-image" src="images/movie-thumbnails/concept-cinema-with-film-elements.jpg">
-                    <div class="movie-card-details">
-                        <div class="movie-name">
-                            The End
+                <div class="middle-section">
+                    <input class="search-bar" type="text" placeholder="Search trending content...">
+                    <div class="filter">
+                        <div class="filter-title">
+                            <img class="filter-title-image" src="images/filter/filter.png">
+                            <h6 class="filter-title-text">Filter</h6>
                         </div>
-                        <div class="movie-data">
-                            <div class="movie-year-rate">
-                                <span class="year">2008</span>
-                                <img class="star" src="images/movie-card/star.svg">
-                                <span class="rating">9.8</span>
+                        <div class="genre-section">
+                            <label class="filter-label">Genre</label>
+                            <div class="genre-buttons">
+                                <button class="genre">Action</button>
+                                <button class="genre">Adventure</button>
+                                <button class="genre">Biography</button>
+                                <button class="genre">Comedy</button>
+                                <button class="genre">Crime</button>
+                                <button class="genre">Drama</button>
+                                <button class="genre">Fantasy</button>
+                                <button class="genre">History</button>
+                                <button class="genre">Horror</button>
+                                <button class="genre">Sci-Fi</button>
+                                <button class="genre">Thriller</button>
                             </div>
-
-                            <button class="add-to-wishlist">
-                                <img src="images/movie-card/heart.svg">
-                            </button>
-                        </div> 
-                    </div>
-                </div>
-
-                <div class="movie-card">
-                    <img class="movie-card-image" src="images/movie-thumbnails/couple-with-sign.jpg">
-                    <div class="movie-card-details">
-                        <div class="movie-name">
-                            Fight The Flu
                         </div>
-                        <div class="movie-data">
-                            <div class="movie-year-rate">
-                                <span class="year">2010</span>
-                                <img class="star" src="images/movie-card/star.svg">
-                                <span class="rating">7.5</span>
-                            </div>
-
-                            <button class="add-to-wishlist">
-                                <img src="images/movie-card/heart.svg">
-                            </button>
-                        </div> 
-                    </div>
-                </div>
-
-                <div class="movie-card">
-                    <img class="movie-card-image" src="images/movie-thumbnails/single-s-day-banner-design.jpg">
-                    <div class="movie-card-details">
-                        <div class="movie-name">
-                            Single's Day
+                        <div class="year-section">
+                            <label for="filter-year" class="filter-label">Year</label>
+                            <select class="filter-year" id="year" name="year">
+                                <option value="ALL">ALL</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019-2010">2019 - 2010</option>
+                                <option value="2009-2000">2009 - 2000</option>
+                            </select>
                         </div>
-                        <div class="movie-data">
-                            <div class="movie-year-rate">
-                                <span class="year">2008</span>
-                                <img class="star" src="images/movie-card/star.svg">
-                                <span class="rating">9.8</span>
-                            </div>
-
-                            <button class="add-to-wishlist">
-                                <img src="images/movie-card/heart.svg">
-                            </button>
-                        </div> 
+                        <button class="clear-button">Clear</button>
                     </div>
                 </div>
 
-            </div>
+                <div class="movies-container">
+
+                    <div class="movie-card">
+                        <img class="movie-card-image" src="images/movie-thumbnails/concept-cinema-with-film-elements.jpg">
+                        <div class="movie-card-details">
+                            <div class="movie-name">
+                                The End
+                            </div>
+                            <div class="movie-data">
+                                <div class="movie-year-rate">
+                                    <span class="year">2008</span>
+                                    <img class="star" src="images/movie-card/star.svg">
+                                    <span class="rating">9.8</span>
+                                </div>
+
+                                <button class="add-to-wishlist">
+                                    <img src="images/movie-card/heart.svg">
+                                </button>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="movie-card">
+                        <img class="movie-card-image" src="images/movie-thumbnails/couple-with-sign.jpg">
+                        <div class="movie-card-details">
+                            <div class="movie-name">
+                                Fight The Flu
+                            </div>
+                            <div class="movie-data">
+                                <div class="movie-year-rate">
+                                    <span class="year">2010</span>
+                                    <img class="star" src="images/movie-card/star.svg">
+                                    <span class="rating">7.5</span>
+                                </div>
+
+                                <button class="add-to-wishlist">
+                                    <img src="images/movie-card/heart.svg">
+                                </button>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="movie-card">
+                        <img class="movie-card-image" src="images/movie-thumbnails/single-s-day-banner-design.jpg">
+                        <div class="movie-card-details">
+                            <div class="movie-name">
+                                Single's Day
+                            </div>
+                            <div class="movie-data">
+                                <div class="movie-year-rate">
+                                    <span class="year">2008</span>
+                                    <img class="star" src="images/movie-card/star.svg">
+                                    <span class="rating">9.8</span>
+                                </div>
+
+                                <button class="add-to-wishlist">
+                                    <img src="images/movie-card/heart.svg">
+                                </button>
+                            </div> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>    
         </div>
     </body>
 </html>
