@@ -1,0 +1,28 @@
+body {
+    background: linear-gradient(to bottom, rgb(15, 14, 30), rgb(41, 39, 71));
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}
+
+.tv-series-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 50px;
+}
+.tv-series-image {
+    height: 40px;          
+    width: auto;
+    filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%); 
+}
+.middle-section {
+    margin-left: 50px;
+    margin-bottom: 50px;
+}
