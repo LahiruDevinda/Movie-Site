@@ -96,3 +96,28 @@ body::before {
     width: auto;
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%); 
 }
+
+@media (max-width: 1040px) {
+    .greeting-text {
+        font-size: 60px;
+        text-align: center;
+    }
+
+    .search-bar {
+        width: 500px;
+    }
+}
+
+@media (max-width: 678px) {
+    .greeting-text {
+        justify-content: center;
+    }
+
+    .search-bar {
+        width: 360px;
+    }
+
+    .featured-movie-title {
+        font-size: 25px
+    }
+}
