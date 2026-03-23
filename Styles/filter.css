@@ -22,9 +22,10 @@
     background-color: #313a48;
     margin-top: 20px;
     margin-bottom: 10px;
+    margin-right: 50px;
     border-radius: 10px; 
     max-width: 1000px;
-    position: relative;;
+    position: relative;
 }
 
 .filter-title {
@@ -51,7 +52,7 @@
 
 .filter-year {
     height: 40px;
-    width: 200px;
+    width: 400px;
     background-color: #212a37;
     color: white;
     border-radius: 5px;
@@ -119,4 +120,31 @@
 .genre-section, .year-section {
     display: flex;
     flex-direction: column;
+}
+
+
+@media (max-width: 920px) {
+    .filter-year {
+        width: 200px;
+    }
+}
+
+@media (max-width: 730px) {
+    .filter {
+        display: block;
+        width: 90%;
+        justify-content: center;
+    }
+
+    .search-bar {
+        width: 90%;
+    }
+
+    .filter-year {
+        width: 100%;
+    }
+
+    .filter-label {
+        margin-top: 10px;
+    }
 }
