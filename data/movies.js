@@ -1,5 +1,5 @@
 import { selectedGenres, selectedYear } from "../utils/filter.js";
-import { API_KEY } from "./userData.js";
+import { API_KEY, ACCOUNT_ID, BEARER_TOKEN } from "./userData.js";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -123,28 +123,47 @@ window.addEventListener('scroll', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     fetchMovies(currentPage);
 
-    document.body.addEventListener('click', (event) => {
-
+    document.body.addEventListener('click', async (event) => {
         const heartButton = event.target.closest('.add-to-wishlist');
-        
         if (!heartButton) return;
 
-        const movieId = String(heartButton.dataset.movieId);
-        let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+        const movieId = heartButton.dataset.movieId;
+        
+        const isFavorite = heartButton.classList.contains('wishlist-active');
+        const newStatus = !isFavorite; 
 
-        if (wishlist.includes(movieId)) {
-            wishlist = wishlist.filter(id => id !== movieId);
-            heartButton.classList.remove('wishlist-active');
-            console.log(`Removed movie ${movieId}`);
-        } else {
-            wishlist.push(movieId);
-            heartButton.classList.add('wishlist-active');
-            console.log(`Saved movie ${movieId}`);
+        try {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${BEARER_TOKEN}`
+                },
+                body: JSON.stringify({
+                    media_type: 'movie',
+                    media_id: parseInt(movieId),
+                    favorite: newStatus
+                })
+            };
+
+            const response = await fetch(`https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite`, options);
+            const data = await response.json();
+
+            if (data.success) {
+                
+                if (window.location.pathname.includes('wishlist.html') && newStatus === false) {
+                    heartButton.closest('.movie-card').remove();
+                } else {
+                    
+                    heartButton.classList.toggle('wishlist-active');
+                }
+                console.log(newStatus ? "Added to TMDB" : "Removed from TMDB");
+            }
+        } catch (error) {
+            console.error('Error updating TMDB favorite:', error);
         }
-
-        localStorage.setItem('movieWishlist', JSON.stringify(wishlist));
     });
 });
