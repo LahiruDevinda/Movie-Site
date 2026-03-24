@@ -32,4 +32,4 @@ You will need a free API key from The Movie Database (TMDB).
 
 1. Clone the repository:
    ```sh
-   git clone [https://github.com/your-username/movie-hub.git](https://github.com/your-username/movie-hub.git)
+   git clone [https://github.com/your-username/movie-hub.git](https://github.com/LahiruDevinda/movie-hub.git)
