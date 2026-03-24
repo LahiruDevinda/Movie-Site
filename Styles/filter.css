@@ -96,7 +96,7 @@
 }
 
 .genre:hover {
-    background-color: red;
+    background-color: darkred;
 }
 
 .clear-button {
@@ -122,6 +122,12 @@
     flex-direction: column;
 }
 
+.genre-active {
+    background-color: red;
+}
+.genre-active:hover {
+    background-color: rosybrown;
+}
 
 @media (max-width: 920px) {
     .filter-year {
