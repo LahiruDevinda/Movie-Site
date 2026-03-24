@@ -4,13 +4,19 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 let currentPage = 1;
 let isFetching = false;
+let currentSearchTerm = '';
 
-
-async function fetchMovies(page) {
-    
+export async function fetchMovies(page, query = '') {
     isFetching = true; 
+    let API_URL = '';
 
-    const API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
+    if (query !== '') {
+        
+        const encodedQuery = encodeURIComponent(query);
+        API_URL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodedQuery}&page=${page}`;
+    } else {
+        API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
+    }
 
     try {
         const response = await fetch(API_URL);
@@ -18,8 +24,18 @@ async function fetchMovies(page) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
-        renderMovies(data.results);
+
+        if (page === 1) {
+            document.querySelector('.js-movies-container').innerHTML = '';
+        }
+
+        const cleanMovies = data.results.filter((movie) => {
+            return movie.poster_path !== null && movie.vote_count > 10;
+        });
+        
+        renderMovies(cleanMovies);
 
     } catch (error) {
         console.error('Error fetching movies:', error);
@@ -68,15 +84,14 @@ function renderMovies(moviesArray) {
 window.addEventListener('scroll', () => {
 
     const scrollPosition = window.innerHeight + window.scrollY;
-    
     const bodyHeight = document.body.offsetHeight;
 
     if (scrollPosition >= bodyHeight - 500) {
-        
         if (!isFetching) {
-            currentPage++;
+            currentPage++; 
             console.log(`Loading page ${currentPage}...`);
-            fetchMovies(currentPage);
+            
+            fetchMovies(currentPage, currentSearchTerm); 
         }
     }
 });
