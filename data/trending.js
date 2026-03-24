@@ -1,3 +1,4 @@
+import { selectedGenres, selectedYear } from "../utils/filter.js";
 import { API_KEY } from "./userData.js";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -15,9 +16,32 @@ export async function fetchMovies(page, query = '') {
         
         const encodedQuery = encodeURIComponent(query);
         API_URL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodedQuery}&page=${page}`;
-    } else {
-        API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
-    }
+        
+    } else if (selectedGenres.length > 0 || selectedYear !== 'ALL') {
+        
+        API_URL = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${page}`;
+        
+        if (selectedGenres.length > 0) {
+            const genreString = selectedGenres.join(',');
+            API_URL += `&with_genres=${genreString}`;
+        }
+
+        if (selectedYear !== 'ALL') {
+            if (selectedYear.includes('-')) {
+                const years = selectedYear.split('-');
+                const endYear = years[0];
+                const startYear = years[1];
+                
+                API_URL += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`;
+            } else {
+                API_URL += `&primary_release_year=${selectedYear}`;
+            }
+        }
+        
+        } else {
+            
+            API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
+        }
 
     try {
         const response = await fetch(API_URL);
@@ -31,10 +55,8 @@ export async function fetchMovies(page, query = '') {
         if (page === 1) {
             document.querySelector('.js-movies-container').innerHTML = '';
         }
-
-        const cleanMovies = data.results.filter((movie) => {
-            return movie.poster_path !== null && movie.vote_count > 10;
-        });
+        
+        const cleanMovies = data.results.filter(movie => movie.poster_path !== null && movie.vote_count > 10);
         
         renderMovies(cleanMovies);
 
@@ -100,28 +122,5 @@ window.addEventListener('scroll', () => {
 fetchMovies(currentPage);
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     fetchMovies(currentPage);
-
-    document.body.addEventListener('click', (event) => {
-
-        const heartButton = event.target.closest('.add-to-wishlist');
-        
-        if (!heartButton) return;
-
-        const movieId = String(heartButton.dataset.movieId);
-        let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
-
-        if (wishlist.includes(movieId)) {
-            wishlist = wishlist.filter(id => id !== movieId);
-            heartButton.classList.remove('wishlist-active');
-            console.log(`Removed movie ${movieId}`);
-        } else {
-            wishlist.push(movieId);
-            heartButton.classList.add('wishlist-active');
-            console.log(`Saved movie ${movieId}`);
-        }
-
-        localStorage.setItem('movieWishlist', JSON.stringify(wishlist));
-    });
 });

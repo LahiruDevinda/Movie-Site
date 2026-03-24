@@ -1,5 +1,7 @@
 import { ACCOUNT_ID,BEARER_TOKEN } from "./userData.js";
 
+export let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+
 const moviesContainer = document.querySelector('.movies-container'); 
 
 moviesContainer.addEventListener('click', async (event) => {

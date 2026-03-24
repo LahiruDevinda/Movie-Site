@@ -70,6 +70,8 @@ export async function fetchMovies(page, query = '') {
 function renderMovies(moviesArray) {
     let moviesHTML = '';
 
+    const wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+
     moviesArray.forEach((movie) => {
         const imagePath = movie.poster_path 
             ? `${IMAGE_BASE_URL}${movie.poster_path}` 
@@ -77,6 +79,9 @@ function renderMovies(moviesArray) {
         
         const year = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
         const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
+
+        const isSaved = wishlist.includes(String(movie.id));
+        const heartClass = isSaved ? 'wishlist-active' : '';
 
         moviesHTML += `
             <div class="movie-card">
@@ -92,7 +97,7 @@ function renderMovies(moviesArray) {
                             <span class="rating">${rating}</span>
                         </div>
 
-                        <button class="add-to-wishlist" data-movie-id="${movie.id}">
+                        <button class="add-to-wishlist ${heartClass}" data-movie-id="${movie.id}">
                             <img src="images/movie-card/heart.svg">
                         </button>
                     </div> 
@@ -105,7 +110,6 @@ function renderMovies(moviesArray) {
 }
 
 window.addEventListener('scroll', () => {
-
     const scrollPosition = window.innerHeight + window.scrollY;
     const bodyHeight = document.body.offsetHeight;
 
@@ -113,10 +117,34 @@ window.addEventListener('scroll', () => {
         if (!isFetching) {
             currentPage++; 
             console.log(`Loading page ${currentPage}...`);
-            
             fetchMovies(currentPage, currentSearchTerm); 
         }
     }
 });
 
-fetchMovies(currentPage);
+document.addEventListener('DOMContentLoaded', () => {
+    
+    fetchMovies(currentPage);
+
+    document.body.addEventListener('click', (event) => {
+
+        const heartButton = event.target.closest('.add-to-wishlist');
+        
+        if (!heartButton) return;
+
+        const movieId = String(heartButton.dataset.movieId);
+        let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+
+        if (wishlist.includes(movieId)) {
+            wishlist = wishlist.filter(id => id !== movieId);
+            heartButton.classList.remove('wishlist-active');
+            console.log(`Removed movie ${movieId}`);
+        } else {
+            wishlist.push(movieId);
+            heartButton.classList.add('wishlist-active');
+            console.log(`Saved movie ${movieId}`);
+        }
+
+        localStorage.setItem('movieWishlist', JSON.stringify(wishlist));
+    });
+});

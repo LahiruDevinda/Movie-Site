@@ -62,23 +62,37 @@
     height: 18px;
     margin-left: 10px;
 }
-.add-to-wishlist{
+.add-to-wishlist {
     display: flex;
     height: 35px;
     width: 35px;
-    border-radius: 18px;
+    border-radius: 50%;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
 }
 
 .add-to-wishlist:hover {
     background-color: rgb(108, 107, 107);
 }
+
 .add-to-wishlist:hover img {
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%);
 }
 
-.wishlist-active {
+.add-to-wishlist.wishlist-active {
     background-color: rgb(220, 53, 69) !important;
+}
+
+.add-to-wishlist.wishlist-active img {
+    filter: brightness(0) invert(1) !important;
+}
+
+.add-to-wishlist img {
+    pointer-events: none; 
+    height: 18px;
+    width: 18px;
 }
