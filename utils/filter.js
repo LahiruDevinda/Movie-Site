@@ -17,6 +17,7 @@ const searchBar = document.querySelector('.js-filter-search-bar');
 const genreButtons = document.querySelectorAll('.js-genre');
 const adultButton = document.querySelector('.js-adult-button');
 const filterYear = document.querySelector('.js-filter-year');
+const clearButton = document.querySelector('.js-clear-button');
 
 function handleSearch() {
     const searchTerm = searchBar.value.trim();
@@ -69,6 +70,20 @@ adultButton.addEventListener('click', () => {
 
 filterYear.addEventListener('change', (event) => {
     selectedYear = event.target.value;
+
+    currentPage = 1;
+    fetchMovies(currentPage);
+});
+
+clearButton.addEventListener('click', () => {
+    selectedGenres = [];
+
+    genreButtons.forEach((button) => {
+        button.classList.remove('genre-active');
+    });
+
+    selectedYear = 'ALL';
+    document.querySelector('.js-filter-year').value = 'ALL';
 
     currentPage = 1;
     fetchMovies(currentPage);
