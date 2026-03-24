@@ -1,6 +1,6 @@
 import { selectedGenres, selectedYear } from "../utils/filter.js";
+import { API_KEY } from "./userData.js";
 
-const API_KEY = '9ec2995f36ec4c59498ad443ece4510e';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 

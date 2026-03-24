@@ -66,6 +66,9 @@ genreButtons.forEach((button) => {
 adultButton.addEventListener('click', () => {
     isAdult = !isAdult;
     adultButton.classList.toggle('genre-active');
+
+    currentPage = 1;
+    fetchMovies(currentPage);
 });
 
 filterYear.addEventListener('change', (event) => {
