@@ -98,3 +98,30 @@ window.addEventListener('scroll', () => {
 });
 
 fetchMovies(currentPage);
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    fetchMovies(currentPage);
+
+    document.body.addEventListener('click', (event) => {
+
+        const heartButton = event.target.closest('.add-to-wishlist');
+        
+        if (!heartButton) return;
+
+        const movieId = String(heartButton.dataset.movieId);
+        let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+
+        if (wishlist.includes(movieId)) {
+            wishlist = wishlist.filter(id => id !== movieId);
+            heartButton.classList.remove('wishlist-active');
+            console.log(`Removed movie ${movieId}`);
+        } else {
+            wishlist.push(movieId);
+            heartButton.classList.add('wishlist-active');
+            console.log(`Saved movie ${movieId}`);
+        }
+
+        localStorage.setItem('movieWishlist', JSON.stringify(wishlist));
+    });
+});
