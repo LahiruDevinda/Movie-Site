@@ -13,6 +13,7 @@
     border-radius: 10px;
     background-color: rgb(16, 18, 32);
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 .movie-card-image {
     width: 100%;
@@ -36,6 +37,9 @@
     color: white;
     font-size: 20px;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .movie-data{
