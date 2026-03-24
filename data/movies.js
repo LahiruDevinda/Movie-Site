@@ -1,4 +1,4 @@
-import { selectedGenres } from "../utils/filter.js";
+import { selectedGenres, selectedYear } from "../utils/filter.js";
 
 const API_KEY = '9ec2995f36ec4c59498ad443ece4510e';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -11,16 +11,37 @@ let currentSearchTerm = '';
 export async function fetchMovies(page, query = '') {
     isFetching = true; 
     let API_URL = '';
-    
+
     if (query !== '') {
+        
         const encodedQuery = encodeURIComponent(query);
         API_URL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodedQuery}&page=${page}`;
-    } else if (selectedGenres.length > 0) {
-        const genreString = selectedGenres.join(','); 
-        API_URL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreString}&page=${page}`;    
-    } else {
-        API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
-    }
+        
+    } else if (selectedGenres.length > 0 || selectedYear !== 'ALL') {
+        
+        API_URL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}`;
+        
+        if (selectedGenres.length > 0) {
+            const genreString = selectedGenres.join(',');
+            API_URL += `&with_genres=${genreString}`;
+        }
+
+        if (selectedYear !== 'ALL') {
+            if (selectedYear.includes('-')) {
+                const years = selectedYear.split('-');
+                const endYear = years[0];
+                const startYear = years[1];
+                
+                API_URL += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`;
+            } else {
+                API_URL += `&primary_release_year=${selectedYear}`;
+            }
+        }
+        
+        } else {
+            
+            API_URL = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&page=${page}`;
+        }
 
     try {
         const response = await fetch(API_URL);
