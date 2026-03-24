@@ -78,3 +78,7 @@
 .add-to-wishlist:hover img {
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%);
 }
+
+.wishlist-active {
+    background-color: rgb(220, 53, 69) !important;
+}
