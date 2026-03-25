@@ -1,5 +1,7 @@
 import { ACCOUNT_ID, BEARER_TOKEN } from "./userData.js";
 
+export let favoritList = [];
+
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const moviesContainer = document.querySelector('.js-movie-container');
@@ -106,6 +108,28 @@ if (moviesContainer) {
             console.error('Error removing favorite:', error);
         }
     });
+}
+
+export async function fectchFavoriteList() {
+    const url = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&sort_by=created_at.asc&page=1`;
+    
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${BEARER_TOKEN}`
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        favoritList = data.results.map(movie => movie.id); 
+        return favoritList;
+    } catch (error) {
+        console.error("Error fetching favorites:", error);
+        return [];
+    }
 }
 
 fetchFavorites();
