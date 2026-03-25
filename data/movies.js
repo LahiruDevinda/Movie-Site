@@ -1,6 +1,6 @@
 import { selectedGenres, selectedYear } from "../utils/filter.js";
 import { API_KEY, ACCOUNT_ID, BEARER_TOKEN } from "./userData.js";
-import { favoritList, fectchFavoriteList } from "./wishlist.js";
+import { favoritList } from "./wishlist.js";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -8,8 +8,6 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
-
-fectchFavoriteList();
 
 export async function fetchMovies(page, query = '') {
     isFetching = true; 
@@ -120,50 +118,62 @@ window.addEventListener('scroll', () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', async() => {
-    await fectchFavoriteList();
+document.body.addEventListener('click', async (event) => {
+    const heartButton = event.target.closest('.add-to-wishlist');
 
-    fetchMovies(currentPage);
+    if (!heartButton || !heartButton.dataset.movieId) return;
 
-    document.body.addEventListener('click', async (event) => {
-        const heartButton = event.target.closest('.add-to-wishlist');
-        if (!heartButton) return;
+    const movieId = heartButton.dataset.movieId;
+    const tvId = heartButton.dataset.tvId;
 
-        const movieId = heartButton.dataset.movieId;
-        
-        const isFavorite = heartButton.classList.contains('wishlist-active');
-        const newStatus = !isFavorite; 
+    if (!movieId && !tvId) return;
 
-        try {
-            const options = {
-                method: 'POST',
-                headers: {
-                    'accept': 'application/json',
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${BEARER_TOKEN}`
-                },
-                body: JSON.stringify({
-                    media_type: 'movie',
-                    media_id: parseInt(movieId),
-                    favorite: newStatus
-                })
-            };
+    const mediaType = movieId ? 'movie' : 'tv';
+    const mediaId = movieId ? parseInt(movieId) : parseInt(tvId);
+    
+    const isFavorite = heartButton.classList.contains('wishlist-active');
+    const newStatus = !isFavorite; 
 
-            const response = await fetch(`https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite`, options);
-            const data = await response.json();
+    try {
+        const options = {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${BEARER_TOKEN}`
+            },
+            body: JSON.stringify({
+                media_type: mediaType,
+                media_id: mediaId,
+                favorite: newStatus
+            })
+        };
 
-            if (data.success) {
-                
-                if (window.location.pathname.includes('wishlist.html') && newStatus === false) {
-                    heartButton.closest('.movie-card').remove();
-                } else {
-                    
-                    heartButton.classList.toggle('wishlist-active');
-                }
-                console.log(newStatus ? "Added to TMDB" : "Removed from TMDB");
+        const response = await fetch(`https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite`, options);
+        const data = await response.json();
+
+        if (data.success) {
+
+            if (window.location.pathname.includes('wishlist.html') && !newStatus) {
+                heartButton.closest('.movie-card').remove();
+            } else {
+                heartButton.classList.toggle('wishlist-active');
             }
-        } catch (error) {
-            console.error('Error updating TMDB favorite:', error);
+
+            if (newStatus) {
+                if (!favoritList.includes(mediaId)) favoritList.push(mediaId);
+            } else {
+                const index = favoritList.indexOf(mediaId);
+                if (index > -1) favoritList.splice(index, 1);
+            }
+
+            console.log(`${mediaType === 'movie' ? 'Movie' : 'TV Series'} ${newStatus ? "Added" : "Removed"}`);
         }
-    });
+    } catch (error) {
+        console.error('Error updating TMDB favorite:', error);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchMovies(currentPage);
 });
