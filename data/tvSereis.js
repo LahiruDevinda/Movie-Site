@@ -24,7 +24,12 @@ let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
 
+const loader = document.querySelector('.js-loading');
+
 export async function fetchTVSeries(page, query = '') {
+    
+    loader.classList.remove('hidden');
+
     isFetching = true; 
     currentSearchTerm = query; 
     let API_URL = '';
@@ -79,6 +84,7 @@ export async function fetchTVSeries(page, query = '') {
         console.error('Error fetching TV series:', error);
     } finally {
         isFetching = false; 
+        loader.classList.add('hidden');
     }
 }
 

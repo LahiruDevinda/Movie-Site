@@ -5,13 +5,19 @@ import { favoritList } from "./wishlist.js";
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+const moviesContainer =  document.querySelector('.js-movies-container');
+const loader = document.querySelector('.js-loading');
+
 let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
 
 export async function fetchMovies(page, query = '') {
+
     isFetching = true; 
     let API_URL = '';
+
+    loader.classList.remove('hidden');
 
     if (query !== '') {
         
@@ -65,6 +71,7 @@ export async function fetchMovies(page, query = '') {
         console.error('Error fetching movies:', error);
     } finally {
         isFetching = false; 
+        loader.classList.add('hidden');
     }
 }
 
@@ -102,14 +109,14 @@ function renderMovies(moviesArray) {
         `;
     });
 
-    document.querySelector('.js-movies-container').innerHTML += moviesHTML;
+   moviesContainer.innerHTML += moviesHTML;
 }
 
 window.addEventListener('scroll', () => {
     const scrollPosition = window.innerHeight + window.scrollY;
     const bodyHeight = document.body.offsetHeight;
 
-    if (scrollPosition >= bodyHeight - 500) {
+    if (scrollPosition >= bodyHeight - 50) {
         if (!isFetching) {
             currentPage++; 
             console.log(`Loading page ${currentPage}...`);

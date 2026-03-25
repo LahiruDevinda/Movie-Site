@@ -5,9 +5,13 @@ export let favoritList = [];
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const moviesContainer = document.querySelector('.js-movie-container');
+const loader = document.querySelector('.js-loading');
 
 async function fetchFavorites() {
     
+    loader.classList.remove('hidden');
+    moviesContainer.classList.add('hidden');
+
     const movieUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&page=1&sort_by=created_at.desc`;
     const tvUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/tv?language=en-US&page=1&sort_by=created_at.desc`;
     
@@ -35,6 +39,9 @@ async function fetchFavorites() {
         
     } catch (error) {
         console.error('Error fetching favorites list:', error);
+    }finally {
+        loader.classList.add('hidden');
+        moviesContainer.classList.remove('hidden');
     }
 }
 
