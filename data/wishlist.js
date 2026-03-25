@@ -7,7 +7,9 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const moviesContainer = document.querySelector('.js-movie-container');
 
 async function fetchFavorites() {
-    const url = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&page=1&sort_by=created_at.desc`;
+    
+    const movieUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&page=1&sort_by=created_at.desc`;
+    const tvUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/tv?language=en-US&page=1&sort_by=created_at.desc`;
     
     const options = {
         method: 'GET',
@@ -18,11 +20,18 @@ async function fetchFavorites() {
     };
 
     try {
-        const response = await fetch(url, options);
-        const data = await response.json();
+       
+        const [movieRes, tvRes] = await Promise.all([
+            fetch(movieUrl, options),
+            fetch(tvUrl, options)
+        ]);
+
+        const movieData = await movieRes.json();
+        const tvData = await tvRes.json();
+
+        const combinedResults = [...(movieData.results || []), ...(tvData.results || [])];
         
-        
-        renderMovies(data.results || []); 
+        renderMovies(combinedResults); 
         
     } catch (error) {
         console.error('Error fetching favorites list:', error);
@@ -30,7 +39,6 @@ async function fetchFavorites() {
 }
 
 function renderMovies(moviesArray) {
-    
     if (!moviesContainer) return;
 
     if (moviesArray.length > 0) {
@@ -41,21 +49,28 @@ function renderMovies(moviesArray) {
                 ? `${IMAGE_BASE_URL}${movie.poster_path}` 
                 : 'images/movie-thumbnails/concept-cinema-with-film-elements.jpg'; 
             
-            const year = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
+            const displayName = movie.title || movie.name || "Unknown Title";
+            
+            const dateSource = movie.release_date || movie.first_air_date || '';
+            const year = dateSource ? dateSource.substring(0, 4) : 'N/A';
+            
             const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
+
+            const isTV = movie.first_air_date !== undefined || movie.name !== undefined;
+            const idAttribute = isTV ? `data-tv-id="${movie.id}"` : `data-movie-id="${movie.id}"`;
 
             moviesHTML += `
                 <div class="movie-card">
-                    <img class="movie-card-image" src="${imagePath}" alt="${movie.title}">
+                    <img class="movie-card-image" src="${imagePath}" alt="${displayName}">
                     <div class="movie-card-details">
-                        <div class="movie-name">${movie.title || movie.name}</div>
+                        <div class="movie-name">${displayName}</div>
                         <div class="movie-data">
                             <div class="movie-year-rate">
                                 <span class="year">${year}</span>
                                 <img class="star" src="images/movie-card/star.svg">
                                 <span class="rating">${rating}</span>
                             </div>
-                            <button class="add-to-wishlist wishlist-active" data-movie-id="${movie.id}">
+                            <button class="add-to-wishlist wishlist-active" ${idAttribute} data-media-type="${isTV ? 'tv' : 'movie'}">
                                 <img src="images/movie-card/heart.svg">
                             </button>
                         </div> 
@@ -76,7 +91,8 @@ if (moviesContainer) {
         const heartButton = event.target.closest('.add-to-wishlist');
         if (!heartButton) return;
 
-        const movieId = heartButton.dataset.movieId;
+        const mediaId = heartButton.dataset.movieId || heartButton.dataset.tvId;
+        const mediaType = heartButton.dataset.mediaType;
 
         try {
             const options = {
@@ -87,8 +103,8 @@ if (moviesContainer) {
                     Authorization: `Bearer ${BEARER_TOKEN}`
                 },
                 body: JSON.stringify({
-                    media_type: 'movie',
-                    media_id: parseInt(movieId),
+                    media_type: mediaType,
+                    media_id: parseInt(mediaId),
                     favorite: false
                 })
             };
@@ -97,7 +113,6 @@ if (moviesContainer) {
             const data = await response.json();
 
             if (data.success) {
-                
                 heartButton.closest('.movie-card').remove();
                 
                 if (moviesContainer.querySelectorAll('.movie-card').length === 0) {
@@ -111,7 +126,8 @@ if (moviesContainer) {
 }
 
 export async function fectchFavoriteList() {
-    const url = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&sort_by=created_at.asc&page=1`;
+    const movieUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&sort_by=created_at.asc&page=1`;
+    const tvUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/tv?language=en-US&sort_by=created_at.asc&page=1`;
     
     const options = {
         method: 'GET',
@@ -122,12 +138,21 @@ export async function fectchFavoriteList() {
     };
 
     try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        favoritList = data.results.map(movie => movie.id); 
+        const [movieRes, tvRes] = await Promise.all([
+            fetch(movieUrl, options),
+            fetch(tvUrl, options)
+        ]);
+
+        const movieData = await movieRes.json();
+        const tvData = await tvRes.json();
+
+        const movieIds = movieData.results.map(movie => movie.id);
+        const tvIds = tvData.results.map(tv => tv.id);
+
+        favoritList = [...movieIds, ...tvIds]; 
         return favoritList;
     } catch (error) {
-        console.error("Error fetching favorites:", error);
+        console.error("Error fetching combined favorites:", error);
         return [];
     }
 }
