@@ -122,7 +122,7 @@ window.addEventListener('scroll', () => {
 
 document.addEventListener('DOMContentLoaded', async() => {
     await fectchFavoriteList();
-    
+
     fetchMovies(currentPage);
 
     document.body.addEventListener('click', async (event) => {
@@ -166,11 +166,4 @@ document.addEventListener('DOMContentLoaded', async() => {
             console.error('Error updating TMDB favorite:', error);
         }
     });
-});
-document.addEventListener('DOMContentLoaded', async () => {
-    
-    
-    
-    // 2. Then load the trending/searched movies
-    fetchMovies(currentPage);
 });
