@@ -1,5 +1,6 @@
 import { selectedGenres, selectedYear } from "../utils/filter.js";
 import { API_KEY, ACCOUNT_ID, BEARER_TOKEN } from "./userData.js";
+import { favoritList, fectchFavoriteList } from "./wishlist.js";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -7,6 +8,8 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
+
+fectchFavoriteList();
 
 export async function fetchMovies(page, query = '') {
     isFetching = true; 
@@ -70,8 +73,6 @@ export async function fetchMovies(page, query = '') {
 function renderMovies(moviesArray) {
     let moviesHTML = '';
 
-    const wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
-
     moviesArray.forEach((movie) => {
         const imagePath = movie.poster_path 
             ? `${IMAGE_BASE_URL}${movie.poster_path}` 
@@ -80,23 +81,20 @@ function renderMovies(moviesArray) {
         const year = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
         const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
 
-        const isSaved = wishlist.includes(String(movie.id));
-        const heartClass = isSaved ? 'wishlist-active' : '';
+        const isFavorite = favoritList.includes(movie.id);
+        const heartClass = isFavorite ? 'wishlist-active' : '';
 
         moviesHTML += `
             <div class="movie-card">
                 <img class="movie-card-image" src="${imagePath}" alt="${movie.title}">
                 <div class="movie-card-details">
-                    <div class="movie-name">
-                        ${movie.title || movie.name}
-                    </div>
+                    <div class="movie-name">${movie.title || movie.name}</div>
                     <div class="movie-data">
                         <div class="movie-year-rate">
                             <span class="year">${year}</span>
                             <img class="star" src="images/movie-card/star.svg">
                             <span class="rating">${rating}</span>
                         </div>
-
                         <button class="add-to-wishlist ${heartClass}" data-movie-id="${movie.id}">
                             <img src="images/movie-card/heart.svg">
                         </button>
@@ -122,7 +120,9 @@ window.addEventListener('scroll', () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async() => {
+    await fectchFavoriteList();
+    
     fetchMovies(currentPage);
 
     document.body.addEventListener('click', async (event) => {
@@ -166,4 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error updating TMDB favorite:', error);
         }
     });
+});
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    
+    
+    // 2. Then load the trending/searched movies
+    fetchMovies(currentPage);
 });
