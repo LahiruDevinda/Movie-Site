@@ -1,5 +1,6 @@
 import { selectedGenres, selectedYear } from "../utils/filter.js";
-import { API_KEY } from "./userData.js";
+import { API_KEY, ACCOUNT_ID, BEARER_TOKEN } from "./userData.js";
+import { favoritList, fectchFavoriteList } from "./wishlist.js";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -7,6 +8,8 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
+
+fectchFavoriteList();
 
 export async function fetchMovies(page, query = '') {
     isFetching = true; 
@@ -70,8 +73,6 @@ export async function fetchMovies(page, query = '') {
 function renderMovies(moviesArray) {
     let moviesHTML = '';
 
-    const wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
-
     moviesArray.forEach((movie) => {
         const imagePath = movie.poster_path 
             ? `${IMAGE_BASE_URL}${movie.poster_path}` 
@@ -80,23 +81,20 @@ function renderMovies(moviesArray) {
         const year = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
         const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
 
-        const isSaved = wishlist.includes(String(movie.id));
-        const heartClass = isSaved ? 'wishlist-active' : '';
+        const isFavorite = favoritList.includes(movie.id);
+        const heartClass = isFavorite ? 'wishlist-active' : '';
 
         moviesHTML += `
             <div class="movie-card">
                 <img class="movie-card-image" src="${imagePath}" alt="${movie.title}">
                 <div class="movie-card-details">
-                    <div class="movie-name">
-                        ${movie.title || movie.name}
-                    </div>
+                    <div class="movie-name">${movie.title || movie.name}</div>
                     <div class="movie-data">
                         <div class="movie-year-rate">
                             <span class="year">${year}</span>
                             <img class="star" src="images/movie-card/star.svg">
                             <span class="rating">${rating}</span>
                         </div>
-
                         <button class="add-to-wishlist ${heartClass}" data-movie-id="${movie.id}">
                             <img src="images/movie-card/heart.svg">
                         </button>
@@ -122,29 +120,50 @@ window.addEventListener('scroll', () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    
+document.addEventListener('DOMContentLoaded', async() => {
+    await fectchFavoriteList();
+
     fetchMovies(currentPage);
 
-    document.body.addEventListener('click', (event) => {
-
+    document.body.addEventListener('click', async (event) => {
         const heartButton = event.target.closest('.add-to-wishlist');
-        
         if (!heartButton) return;
 
-        const movieId = String(heartButton.dataset.movieId);
-        let wishlist = JSON.parse(localStorage.getItem('movieWishlist')) || [];
+        const movieId = heartButton.dataset.movieId;
+        
+        const isFavorite = heartButton.classList.contains('wishlist-active');
+        const newStatus = !isFavorite; 
 
-        if (wishlist.includes(movieId)) {
-            wishlist = wishlist.filter(id => id !== movieId);
-            heartButton.classList.remove('wishlist-active');
-            console.log(`Removed movie ${movieId}`);
-        } else {
-            wishlist.push(movieId);
-            heartButton.classList.add('wishlist-active');
-            console.log(`Saved movie ${movieId}`);
+        try {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${BEARER_TOKEN}`
+                },
+                body: JSON.stringify({
+                    media_type: 'movie',
+                    media_id: parseInt(movieId),
+                    favorite: newStatus
+                })
+            };
+
+            const response = await fetch(`https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite`, options);
+            const data = await response.json();
+
+            if (data.success) {
+                
+                if (window.location.pathname.includes('wishlist.html') && newStatus === false) {
+                    heartButton.closest('.movie-card').remove();
+                } else {
+                    
+                    heartButton.classList.toggle('wishlist-active');
+                }
+                console.log(newStatus ? "Added to TMDB" : "Removed from TMDB");
+            }
+        } catch (error) {
+            console.error('Error updating TMDB favorite:', error);
         }
-
-        localStorage.setItem('movieWishlist', JSON.stringify(wishlist));
     });
 });
