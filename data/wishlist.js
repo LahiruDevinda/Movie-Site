@@ -4,7 +4,7 @@ export let favoritList = [];
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const moviesContainer = document.querySelector('.js-movie-container');
+const moviesContainer = document.querySelector('.js-movies-container');
 const loader = document.querySelector('.js-loading');
 
 async function fetchFavorites() {
@@ -65,9 +65,10 @@ function renderMovies(moviesArray) {
 
             const isTV = movie.first_air_date !== undefined || movie.name !== undefined;
             const idAttribute = isTV ? `data-tv-id="${movie.id}"` : `data-movie-id="${movie.id}"`;
+            const mediaType = isTV ? 'tv' : 'movie';
 
             moviesHTML += `
-                <div class="movie-card" data-movie-id="${movie.id}">
+                <div class="movie-card" data-movie-id="${movie.id}"  data-media-type="${mediaType}">
                     <img class="movie-card-image" src="${imagePath}" alt="${displayName}">
                     <div class="movie-card-details">
                         <div class="movie-name">${displayName}</div>
