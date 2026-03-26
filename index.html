@@ -59,16 +59,16 @@
 
         <div class="pop-up hidden-popup">
             <div class="movie-details">
-                <img class="movie-details-close" src="images/site/icons8-close.svg">
+                <img class="movie-details-close js-movie-details-close" src="images/site/icons8-close.svg">
                 <img class="movie-image" src="images/movie-thumbnails/couple-with-sign.jpg">
                 <div class="details">
-                    <div class="title">Couple with Sign</div>
-                    <div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus unde quae possimus veritatis harum earum sed quod, vero consequuntur, odio nihil amet obcaecati dicta voluptates, dignissimos voluptatum alias recusandae non.</div>
+                    <div class="title js-title"></div>
+                    <div class="description js-description"></div>
                     <div class="section">
                         <div class="section-title">
                             Genre:
                         </div>
-                        <div class="content">
+                        <div class="content js-genre-content">
                             action, adventure
                         </div>
                     </div>
@@ -76,31 +76,28 @@
                         <div class="section-title">
                             Release Date:
                         </div>
-                        <div class="content">
-                            2024/12/13
+                        <div class="content js-release-date-section">
                         </div>
                     </div>
                     <div class="section">
                         <div class="section-title">
                             Language:
                         </div>
-                        <div class="content">
-                            English
+                        <div class="content js-language-content">
                         </div>
                     </div>
                     <div class="section">
                         <div class="section-title">
                             Ratings:
                         </div>
-                        <div class="content">
-                            7.8/10
+                        <div class="content js-rating-content">
                         </div>
                     </div>
-                    <button class="site-link-button">Watch In Site</button>
+                    <button class="site-link-button js-site-link-button">Watch In Site</button>
                 </div>
             </div>
 
-            <div class="loading js-loading hidden">
+            <div class="loading js-loading hidden-loading">
                 <img class="loading-image" src="images/site/icons8-loading-100.png">
                 Loading...
             </div>
@@ -135,6 +132,7 @@
             <script src="styles-js/nav-bar.js"></script>
             <script src="data/popular-movies.js" type="module"></script>
             <script src="utils/search-bar.js" type="module"></script>
+            <script src="data/movie-details.js" type="module"></script>
         </div>
     </body>
 </html>
