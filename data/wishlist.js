@@ -4,7 +4,7 @@ export let favoritList = [];
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const moviesContainer = document.querySelector('.js-movies-container');
+const moviesContainer = document.querySelector('.js-movie-container');
 const loader = document.querySelector('.js-loading');
 
 async function fetchFavorites() {
