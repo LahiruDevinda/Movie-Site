@@ -6,7 +6,7 @@ body {
     padding: 0px;
 }
 
-.title {
+.main-title {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -17,7 +17,7 @@ body {
     font-weight: bold;
     margin-left: 50px;
 }
-.movie-image {
+.main-movie-image {
     height: 40px;          
     width: auto;
     filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(4deg) brightness(105%) contrast(115%); 
