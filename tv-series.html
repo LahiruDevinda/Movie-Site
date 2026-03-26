@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="Styles/movie-card.css">
         <link rel="stylesheet" href="Styles/filter.css">
         <link rel="stylesheet" href="Styles/animetion.css">
+        <link rel="stylesheet" href="Styles/movie-details.css">
     </head>
     <body>
         <div class="nav-bar">
@@ -56,6 +57,53 @@
                 </div>    
             </div>
         </div>
+
+        <div class="pop-up hidden-popup">
+            <div class="movie-details">
+                <img class="movie-details-close js-movie-details-close" src="images/site/icons8-close.svg">
+                <img class="movie-image" src="images/movie-thumbnails/couple-with-sign.jpg">
+                <div class="details">
+                    <div class="title js-title"></div>
+                    <div class="description js-description"></div>
+                    <div class="section">
+                        <div class="section-title">
+                            Genre:
+                        </div>
+                        <div class="content js-genre-content">
+                            action, adventure
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">
+                            Release Date:
+                        </div>
+                        <div class="content js-release-date-section">
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">
+                            Language:
+                        </div>
+                        <div class="content js-language-content">
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">
+                            Ratings:
+                        </div>
+                        <div class="content js-rating-content">
+                        </div>
+                    </div>
+                    <button class="site-link-button js-site-link-button">Watch In Site</button>
+                </div>
+            </div>
+
+            <div class="loading hidden-js-popup-loading">
+                <img class="loading-image" src="images/site/icons8-loading-100.png">
+                Loading...
+            </div>
+        </div>
+
         <div class="page-reveal">
             <div class="tv-series">
                 <div class="tv-series-title">
@@ -116,8 +164,9 @@
         </div>
         <div class="scripts">
             <script src="styles-js/nav-bar.js"></script>
-            <script src="data/tvSereis.js" type="module"></script>
+            <script src="data/tv-series.js" type="module"></script>
             <script src="utils/filter.js" type="module"></script>
+            <script src="data/tv-series-details.js" type="module"></script>
         </div>
     </body>
 </html>

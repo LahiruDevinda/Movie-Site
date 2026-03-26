@@ -102,9 +102,10 @@ function renderTVSeries(tvArray) {
 
         const isFavorite = favoritList.includes(tv.id);
         const heartClass = isFavorite ? 'wishlist-active' : '';
+        const mediaType = tv.media_type;
 
         tvHTML += `
-            <div class="movie-card">
+            <div class="movie-card" data-movie-id="${tv.id}"  data-media-type="${mediaType}">
                 <img class="movie-card-image" src="${imagePath}" alt="${title}">
                 <div class="movie-card-details">
                     <div class="movie-name">${title}</div>
