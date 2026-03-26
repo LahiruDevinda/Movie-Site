@@ -8,6 +8,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const moviesContainer =  document.querySelector('.js-movies-container');
 const loader = document.querySelector('.js-loading');
 
+
 let currentPage = 1;
 let isFetching = false;
 let currentSearchTerm = '';
@@ -88,9 +89,10 @@ function renderMovies(moviesArray) {
 
         const isFavorite = favoritList.includes(movie.id);
         const heartClass = isFavorite ? 'wishlist-active' : '';
+        const mediaType = movie.media_type;
 
         moviesHTML += `
-            <div class="movie-card" data-movie-id="${movie.id}">
+            <div class="movie-card" data-movie-id="${movie.id}"  data-media-type="${mediaType}">
                 <img class="movie-card-image" src="${imagePath}" alt="${movie.title}">
                 <div class="movie-card-details">
                     <div class="movie-name">${movie.title || movie.name}</div>
