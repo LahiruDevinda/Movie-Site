@@ -26,3 +26,27 @@ body {
     margin-left: 50px;
     margin-bottom: 50px;
 }
+
+.empty-wishlist {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.empty-wishlist-image {
+    height: 40%;
+    filter: invert(1) brightness(100) opacity(.1);
+}
+
+.empty-wishlist-text {
+    color: white;
+    filter: opacity(.1);
+    font-size: 50px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 800;
+}
+
+.empty-wishlist-hidden {
+    display: none;
+}

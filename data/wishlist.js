@@ -4,17 +4,19 @@ export let favoritList = [];
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const moviesContainer = document.querySelector('.js-movies-container');
+const moviesContainer = document.querySelector('.js-movie-container');
 const loader = document.querySelector('.js-loading');
+const empty = document.querySelector('.empty');
 
 async function fetchFavorites() {
-    
     loader.classList.remove('hidden');
-    moviesContainer.classList.add('hidden');
+
+    moviesContainer.classList.add('empty-wishlist-hidden');
+    empty.classList.add('empty-wishlist-hidden');
 
     const movieUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/movies?language=en-US&page=1&sort_by=created_at.desc`;
     const tvUrl = `https://api.themoviedb.org/3/account/${ACCOUNT_ID}/favorite/tv?language=en-US&page=1&sort_by=created_at.desc`;
-    
+
     const options = {
         method: 'GET',
         headers: {
@@ -24,7 +26,6 @@ async function fetchFavorites() {
     };
 
     try {
-       
         const [movieRes, tvRes] = await Promise.all([
             fetch(movieUrl, options),
             fetch(tvUrl, options)
@@ -34,14 +35,13 @@ async function fetchFavorites() {
         const tvData = await tvRes.json();
 
         const combinedResults = [...(movieData.results || []), ...(tvData.results || [])];
-        
-        renderMovies(combinedResults); 
-        
+
+        renderMovies(combinedResults);
+
     } catch (error) {
         console.error('Error fetching favorites list:', error);
-    }finally {
+    } finally {
         loader.classList.add('hidden');
-        moviesContainer.classList.remove('hidden');
     }
 }
 
@@ -52,15 +52,13 @@ function renderMovies(moviesArray) {
         let moviesHTML = '';
 
         moviesArray.forEach((movie) => {
-            const imagePath = movie.poster_path 
-                ? `${IMAGE_BASE_URL}${movie.poster_path}` 
-                : 'images/movie-thumbnails/concept-cinema-with-film-elements.jpg'; 
-            
+            const imagePath = movie.poster_path
+                ? `${IMAGE_BASE_URL}${movie.poster_path}`
+                : 'images/movie-thumbnails/concept-cinema-with-film-elements.jpg';
+
             const displayName = movie.title || movie.name || "Unknown Title";
-            
             const dateSource = movie.release_date || movie.first_air_date || '';
             const year = dateSource ? dateSource.substring(0, 4) : 'N/A';
-            
             const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
 
             const isTV = movie.first_air_date !== undefined || movie.name !== undefined;
@@ -68,7 +66,7 @@ function renderMovies(moviesArray) {
             const mediaType = isTV ? 'tv' : 'movie';
 
             moviesHTML += `
-                <div class="movie-card" data-movie-id="${movie.id}"  data-media-type="${mediaType}">
+                <div class="movie-card" ${idAttribute} data-media-type="${mediaType}">
                     <img class="movie-card-image" src="${imagePath}" alt="${displayName}">
                     <div class="movie-card-details">
                         <div class="movie-name">${displayName}</div>
@@ -78,19 +76,23 @@ function renderMovies(moviesArray) {
                                 <img class="star" src="images/movie-card/star.svg">
                                 <span class="rating">${rating}</span>
                             </div>
-                            <button class="add-to-wishlist wishlist-active" ${idAttribute} data-media-type="${isTV ? 'tv' : 'movie'}">
+                            <button class="add-to-wishlist wishlist-active" ${idAttribute} data-media-type="${mediaType}">
                                 <img src="images/movie-card/heart.svg">
                             </button>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             `;
         });
 
         moviesContainer.innerHTML = moviesHTML;
+        moviesContainer.classList.remove('empty-wishlist-hidden');
+        empty.classList.add('empty-wishlist-hidden');
 
     } else {
-        moviesContainer.innerHTML = `<h3 style="color: white; text-align: center; width: 100%;">Your wishlist is currently empty.</h3>`;
+        moviesContainer.innerHTML = '';
+        moviesContainer.classList.add('empty-wishlist-hidden');
+        empty.classList.remove('empty-wishlist-hidden');
     }
 }
 
@@ -122,9 +124,11 @@ if (moviesContainer) {
 
             if (data.success) {
                 heartButton.closest('.movie-card').remove();
-                
+
                 if (moviesContainer.querySelectorAll('.movie-card').length === 0) {
-                    moviesContainer.innerHTML = `<h3 style="color: white; text-align: center; width: 100%;">Your wishlist is currently empty.</h3>`;
+                    moviesContainer.innerHTML = '';
+                    moviesContainer.classList.add('empty-wishlist-hidden');
+                    empty.classList.remove('empty-wishlist-hidden');
                 }
             }
         } catch (error) {
