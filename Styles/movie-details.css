@@ -111,7 +111,7 @@
 }
 
 .hidden-popup,
-.hidden-loading,
+.hidden-js-popup-loading,
 .hidden-movie-details {
     display: none;
 }
