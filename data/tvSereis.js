@@ -104,7 +104,7 @@ function renderTVSeries(tvArray) {
         const heartClass = isFavorite ? 'wishlist-active' : '';
 
         tvHTML += `
-            <div class="movie-card">
+            <div class="movie-card"  data-movie-id="${movie.id}">
                 <img class="movie-card-image" src="${imagePath}" alt="${title}">
                 <div class="movie-card-details">
                     <div class="movie-name">${title}</div>

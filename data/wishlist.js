@@ -67,7 +67,7 @@ function renderMovies(moviesArray) {
             const idAttribute = isTV ? `data-tv-id="${movie.id}"` : `data-movie-id="${movie.id}"`;
 
             moviesHTML += `
-                <div class="movie-card">
+                <div class="movie-card" data-movie-id="${movie.id}">
                     <img class="movie-card-image" src="${imagePath}" alt="${displayName}">
                     <div class="movie-card-details">
                         <div class="movie-name">${displayName}</div>

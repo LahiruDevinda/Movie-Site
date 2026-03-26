@@ -72,7 +72,7 @@ function renderMovies(moviesArray) {
         const heartClass = isFavorite ? 'wishlist-active' : '';
 
         moviesHTML += `
-            <div class="movie-card">
+            <div class="movie-card" data-movie-id="${movie.id}">
                 <img class="movie-card-image" src="${imagePath}" alt="${movie.title}">
                 <div class="movie-card-details">
                     <div class="movie-name">${movie.title || movie.name}</div>
